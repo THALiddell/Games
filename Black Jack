@@ -1,0 +1,139 @@
+import random as r
+#import art
+#import replit
+
+card_deck = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+
+
+def initial_deal():
+    global player_hand
+    global dealer_hand
+
+    dealer_hand.append(r.choice(card_deck))
+
+    player_hand.append(r.choice(card_deck))
+    player_hand.append(r.choice(card_deck))
+
+    print("The dealer's' card is: {dealer_hand}")
+
+    pscore = 0
+    for card in player_hand:
+        pscore += card
+    if pscore == 21:
+        return "Black Jack"
+
+
+def ncard(score):
+    new_card = r.choice(card_deck)
+    if new_card == 11:
+        if score + new_card > 21:
+            return 1
+    return new_card
+
+
+def user_play(phand):
+    pscore = 0
+
+    for card in phand:
+        pscore += card
+
+    print()
+    print(f"Your cards are: {phand}")
+    print(f"Your total is: {pscore}")
+
+    add_card = input("Would you like another card? y / n: ")
+
+    if add_card == "y":
+        add_card = ncard(pscore)
+        # print(f"DEBUGGING add_card value {add_card}")
+        phand.append(add_card)
+        # print(f"DEBUGGING phand value {phand}")
+        pscore += add_card
+        # print(f"DEBUGGING pscore value {pscore}")
+        if pscore > 21:
+            if 11 in phand:
+                for i in phand:
+                    if i == 11:
+                        i = 1
+            else:
+                return phand, "bust"
+        else:
+            user_play(phand)
+            return phand, "not bust"
+    else:
+        return phand, "not bust"
+
+def dealer_play(dhand):
+    dscore = 0
+
+    print()
+
+    while dscore < 17:
+        dscore = 0
+        new_card = ncard(dscore)
+        dhand.append(new_card)
+        for card in dhand:
+            dscore += card
+
+    print(f"the Dealer's final hand is: {dhand}")
+    print(f"The Dealer's final score is: {dscore} \n")
+    if dscore > 21:
+        return dscore, dhand, "bust"
+    else:
+        return dscore, dhand, "not bust"
+
+def who_won(pscore, dscore):
+    if dealer_data[2] != "bust":
+        if pscore > dscore:
+            print ("You WIN!")
+        elif pscore == dscore:
+            print("Its a tie.")
+        elif pscore < dscore:
+            print("You lose!")
+        else:
+            print("error with who_won func")
+    else:
+        print("The dealer went bust, You WIN!")
+
+run_prog = True
+while run_prog == True:
+    delaer_data = []
+    dealer_hand = []
+    player_data = []
+    player_hand = []
+    player_score = 0
+    dealer_score = 0
+    cont_prog = ""
+
+    #print(art.logo)
+
+    initial_deal()
+
+    if initial_deal == "Black Jack":
+        print("Black Jack! You win!")
+    else:
+        player_data = user_play(player_hand)
+        # print(f"---------DEBUGGING player data = {player_data}")
+        for card in player_data[0]:
+            player_score += card
+        # print(f"---------DEBUGGING player score = {player_score}")
+        player_hand = player_data[1]
+        if player_data[1] != "bust":
+            dealer_data = dealer_play(dealer_hand)
+            dealer_score = dealer_data[0]
+            dealer_hand = dealer_data[1]
+
+    if player_data[1] == "bust":
+        print(f"You went bust. Your score was {player_score} You lose.")
+    else:
+        who_won(player_score, dealer_score)
+
+    cont_prog = input("Do you want to play again? y / n: ")
+    if cont_prog == "n":
+        run_prog = False
+        print("Thanks for playing!")
+    else:
+        #replit.clear()
+        for i in 3:
+          print("-----")
+        

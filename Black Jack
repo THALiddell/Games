@@ -14,7 +14,7 @@ def initial_deal():
     player_hand.append(r.choice(card_deck))
     player_hand.append(r.choice(card_deck))
 
-    print("The dealer's' card is: {dealer_hand}")
+    print(f"The dealer's' card is: {dealer_hand}")
 
     pscore = 0
     for card in player_hand:

@@ -134,6 +134,6 @@ while run_prog == True:
         print("Thanks for playing!")
     else:
         #replit.clear()
-        for i in 3:
+        for i in range(3):
           print("-----")
         
